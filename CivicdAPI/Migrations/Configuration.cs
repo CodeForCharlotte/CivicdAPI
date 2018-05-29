@@ -80,96 +80,199 @@ namespace CivicdAPI.Migrations
             var userId3 = userManager.FindByEmail("civicduser@mailinator.com").Id;
             userManager.AddToRole(userId3, "User");
 
-            context.Activities.AddOrUpdate(
-            p => p.DisplayTitle,
-            new Activity
-            {
-                DisplayTitle = "City Council Meeting",
-                Description = "Lorem ipsum dolor sit amet, eripuit lobortis sapientem pri no, ut sed delenit honestatis. An diceret copiosae pri, ius quas possit ea. Id pri partiendo salutatus disputando. Id nam minim minimum repudiare, ex harum commune interesset usu. Semper dissentiunt eum in. Simul graeco tacimates ius in.",
-                Category = ActivityCategory.Government
-            },
-             new Activity
-             {
-                 DisplayTitle = "Phone Bank",
-                 Description = "Lorem ipsum dolor sit amet, eripuit lobortis sapientem pri no, ut sed delenit honestatis. An diceret copiosae pri, ius quas possit ea. Id pri partiendo salutatus disputando. Id nam minim minimum repudiare, ex harum commune interesset usu. Semper dissentiunt eum in. Simul graeco tacimates ius in.",
-                 Category = ActivityCategory.Protest
-             },
-             new Activity
-             {
-                 DisplayTitle = "School Meeting",
-                 Description = "Lorem ipsum dolor sit amet, eripuit lobortis sapientem pri no, ut sed delenit honestatis. An diceret copiosae pri, ius quas possit ea. Id pri partiendo salutatus disputando. Id nam minim minimum repudiare, ex harum commune interesset usu. Semper dissentiunt eum in. Simul graeco tacimates ius in.",
-                 Category = ActivityCategory.School
-             }
-          );
             context.Tags.AddOrUpdate(
-              p => p.Name,
-                  new Tag
-                  {
-                      Name = "Tag1",
-                  },
-                  new Tag
-                  {
-                      Name = "Tag2",
-                  },
-                  new Tag
-                  {
-                      Name = "Tag3",
-                  },
-                  new Tag
-                  {
-                      Name = "Tag4",
-                  }
-               );
+                p => p.Name,
+                new Tag
+                {
+                    Name = "Liberal",
+                },
+                new Tag
+                {
+                    Name = "Conservative",
+                },
+                new Tag
+                {
+                    Name = "Moderate",
+                },
+                new Tag
+                {
+                    Name = "Activism",
+                },
+                new Tag
+                {
+                    Name = "Transit",
+                },
+                new Tag
+                {
+                    Name = "Feminism",
+                },
+                new Tag
+                {
+                    Name = "LGBTQ",
+                },
+                new Tag
+                {
+                    Name = "Immigration",
+                },
+                new Tag
+                {
+                    Name = "Racial Issues",
+                },
+                new Tag
+                {
+                    Name = "Disability",
+                },
+                new Tag
+                {
+                    Name = "Civil Rights",
+                },
+                new Tag
+                {
+                    Name = "Town Hall",
+                },
+                new Tag
+                {
+                    Name = "Net Neutrality",
+                },
+                new Tag
+                {
+                    Name = "Taxes",
+                },
+                new Tag
+                {
+                    Name = "Voting rights",
+                },
+                new Tag
+                {
+                    Name = "Inequality",
+                },
+                new Tag
+                {
+                    Name = "Income Gap",
+                },
+                new Tag
+                {
+                    Name = "Socialism",
+                },
+                new Tag
+                {
+                    Name = "Libertarism",
+                },
+                new Tag
+                {
+                    Name = "Affordable Housing",
+                },
+                new Tag
+                {
+                    Name = "Healthcare",
+                },
+                new Tag
+                {
+                    Name = "Obesity",
+                },
+                new Tag
+                {
+                    Name = "Mental Health",
+                },
+                new Tag
+                {
+                    Name = "Entitlements",
+                },
+                new Tag
+                {
+                    Name = "Environmental Issues",
+                },
+                new Tag
+                {
+                    Name = "Food Security",
+                },
+                new Tag
+                {
+                    Name = "International",
+                },
+                new Tag
+                {
+                    Name = "Arts",
+                },
+                new Tag
+                {
+                    Name = "Police",
+                },
+                new Tag
+                {
+                    Name = "Privacy",
+                },
+                new Tag
+                {
+                    Name = "Internet Connectivity",
+                },
+                new Tag
+                {
+                    Name = "Nutrition",
+                },
+                new Tag
+                {
+                    Name = "Social Media",
+                },
+                new Tag
+                {
+                    Name = "Grassroots",
+                },
+                new Tag
+                {
+                    Name = "Small business",
+                }
+            );
 
             // Addresses
             context.Addresses.AddOrUpdate(
-              p => p.ID,
-              new Address()
-              {
-                  StreetAddressOne = "101 Main Street",
-                  City = "Charlotte",
-                  State = "NC",
-                  ZipCode = "28215"
-              },
-              new Address()
-              {
-                  StreetAddressOne = "2222 Ordinary Way",
-                  City = "Charlotte",
-                  State = "NC",
-                  ZipCode = "28277"
-              }
-                );
+                p => p.ID,
+                new Address()
+                {
+                    StreetAddressOne = "101 Main Street",
+                    City = "Charlotte",
+                    State = "NC",
+                    ZipCode = "28215"
+                },
+                new Address()
+                {
+                    StreetAddressOne = "2222 Ordinary Way",
+                    City = "Charlotte",
+                    State = "NC",
+                    ZipCode = "28277"
+                }
+            );
 
             // Activities
             context.Activities.AddOrUpdate(
-              p => p.DisplayTitle,
-              new Activity
-              {
-                  DisplayTitle = "City Council Meeting",
-                  Description =
-                  "Lorem ipsum dolor sit amet, eripuit lobortis sapientem pri no, ut sed delenit honestatis. An diceret copiosae pri, ius quas possit ea. Id pri partiendo salutatus disputando. Id nam minim minimum repudiare, ex harum commune interesset usu. Semper dissentiunt eum in. Simul graeco tacimates ius in.",
-                  Category = ActivityCategory.Government,
-                  StartTime = new DateTimeOffset(2018, 05, 03, 13, 30, 00, new TimeSpan(0, 0, 0)),
-                  EndTime = new DateTimeOffset(2018, 05, 03, 14, 30, 00, new TimeSpan(0, 0, 0))
-              },
-              new Activity
-              {
-                  DisplayTitle = "Phone Bank",
-                  Description =
-                  "Lorem ipsum dolor sit amet, eripuit lobortis sapientem pri no, ut sed delenit honestatis. An diceret copiosae pri, ius quas possit ea. Id pri partiendo salutatus disputando. Id nam minim minimum repudiare, ex harum commune interesset usu. Semper dissentiunt eum in. Simul graeco tacimates ius in.",
-                  Category = ActivityCategory.IndependentActivity,
-                  StartTime = new DateTimeOffset(2018, 05, 06, 16, 00, 00, new TimeSpan(0, 0, 0)),
-                  EndTime = new DateTimeOffset(2018, 05, 06, 17, 00, 00, new TimeSpan(0, 0, 0))
-              },
-              new Activity
-              {
-                  DisplayTitle = "School Meeting",
-                  Description = "Lorem ipsum dolor sit amet, eripuit lobortis sapientem pri no, ut sed delenit honestatis. An diceret copiosae pri, ius quas possit ea. Id pri partiendo salutatus disputando. Id nam minim minimum repudiare, ex harum commune interesset usu. Semper dissentiunt eum in. Simul graeco tacimates ius in.",
-                  Category = ActivityCategory.School,
-                  StartTime = new DateTimeOffset(2018, 05, 08, 10, 30, 00, new TimeSpan(0, 0, 0)),
-                  EndTime = new DateTimeOffset(2018, 05, 08, 11, 30, 00, new TimeSpan(0, 0, 0))
-              }
-              );
+                p => p.DisplayTitle,
+                new Activity
+                {
+                    DisplayTitle = "City Council Meeting",
+                    Description =
+                    "Lorem ipsum dolor sit amet, eripuit lobortis sapientem pri no, ut sed delenit honestatis. An diceret copiosae pri, ius quas possit ea. Id pri partiendo salutatus disputando. Id nam minim minimum repudiare, ex harum commune interesset usu. Semper dissentiunt eum in. Simul graeco tacimates ius in.",
+                    Category = ActivityCategory.Government,
+                    StartTime = new DateTimeOffset(2018, 05, 03, 13, 30, 00, new TimeSpan(0, 0, 0)),
+                    EndTime = new DateTimeOffset(2018, 05, 03, 14, 30, 00, new TimeSpan(0, 0, 0))
+                },
+                new Activity
+                {
+                    DisplayTitle = "Phone Bank",
+                    Description =
+                    "Lorem ipsum dolor sit amet, eripuit lobortis sapientem pri no, ut sed delenit honestatis. An diceret copiosae pri, ius quas possit ea. Id pri partiendo salutatus disputando. Id nam minim minimum repudiare, ex harum commune interesset usu. Semper dissentiunt eum in. Simul graeco tacimates ius in.",
+                    Category = ActivityCategory.IndependentActivity,
+                    StartTime = new DateTimeOffset(2018, 05, 06, 16, 00, 00, new TimeSpan(0, 0, 0)),
+                    EndTime = new DateTimeOffset(2018, 05, 06, 17, 00, 00, new TimeSpan(0, 0, 0))
+                },
+                new Activity
+                {
+                    DisplayTitle = "School Meeting",
+                    Description = "Lorem ipsum dolor sit amet, eripuit lobortis sapientem pri no, ut sed delenit honestatis. An diceret copiosae pri, ius quas possit ea. Id pri partiendo salutatus disputando. Id nam minim minimum repudiare, ex harum commune interesset usu. Semper dissentiunt eum in. Simul graeco tacimates ius in.",
+                    Category = ActivityCategory.School,
+                    StartTime = new DateTimeOffset(2018, 05, 08, 10, 30, 00, new TimeSpan(0, 0, 0)),
+                    EndTime = new DateTimeOffset(2018, 05, 08, 11, 30, 00, new TimeSpan(0, 0, 0))
+                }
+            );
 
             context.SaveChanges();
 
@@ -198,6 +301,7 @@ namespace CivicdAPI.Migrations
 
             context.SaveChanges();
 
+          
         }
     }
 }

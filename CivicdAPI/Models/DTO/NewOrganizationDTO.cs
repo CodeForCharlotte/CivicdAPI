@@ -1,16 +1,20 @@
-﻿using CivicdAPI.Models.DTO;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 
-namespace CivicdAPI.Models
+namespace CivicdAPI.Models.DTO
 {
-    public class OrganizationDTO
+    public class NewOrganizationDTO
     {
         [Required]
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string DisplayName { get; set; }
+        [Required]
+        public string Password { get; set; }
         [Required]
         public OrganizationCategory OrganizationCategory { get; set; }
         public string PhoneNumber { get; set; }
