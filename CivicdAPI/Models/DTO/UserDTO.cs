@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CivicdAPI.Models
 {
-  public class OrganizationDTO
+  public class UserDTO
   {
     [Required]
     public string Email { get; set; }
@@ -12,7 +12,7 @@ namespace CivicdAPI.Models
     public string LastName { get; set; }
     public string DisplayName { get; set; }
     [Required]
-    public int OrganizationCategory { get; set; }
+    public int Category { get; set; }
     public string PhoneNumber { get; set; }
     public string ProfileDescription { get; set; }
     public string StreetAddressOne { get; set; }

@@ -222,7 +222,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActivityActionController.cs" />
     <Compile Include="Controllers\Helpers\UserRoleHelper.cs" />
-    <Compile Include="Controllers\OrganizationController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -269,13 +269,13 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\Address.cs" />
-    <Compile Include="Models\DTO\NewOrganizationDTO.cs" />
+    <Compile Include="Models\DTO\NewUserDTO.cs" />
     <Compile Include="Models\DTO\TagDTO.cs" />
     <Compile Include="Models\LegalStatus.cs" />
     <Compile Include="Models\OrganizationCategory.cs" />
     <Compile Include="Models\ActivityCategory.cs" />
     <Compile Include="Models\DTO\ActivityDTO.cs" />
-    <Compile Include="Models\DTO\OrganizationDTO.cs" />
+    <Compile Include="Models\DTO\UserDTO.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\UserActivity.cs" />

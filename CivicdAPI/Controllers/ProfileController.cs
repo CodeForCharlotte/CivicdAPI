@@ -64,7 +64,7 @@ namespace CivicdAPI.Controllers
 
     [HttpGet]
     [Route("Organizations/{organizationId}")]
-    public async Task<OrganizationDTO> GetOrganizationById(string organizationId)
+    public async Task<UserDTO> GetOrganizationById(string organizationId)
     {
       var matchedOrganization = await UserManager.FindByIdAsync(organizationId);
       if (matchedOrganization == null)
@@ -73,13 +73,13 @@ namespace CivicdAPI.Controllers
         throw new Exception("Unable to Find Matching Organization.");
       }
 
-      return new OrganizationDTO
+      return new UserDTO
       {
         Email = matchedOrganization.Email,
         DisplayName = matchedOrganization.DisplayName,
         FirstName = matchedOrganization.FirstName,
         LastName = matchedOrganization.LastName,
-        OrganizationCategory = (int)matchedOrganization.Category,
+        Category = (int)matchedOrganization.Category,
         ProfileDescription = matchedOrganization.ProfileDescription,
         StreetAddressOne = matchedOrganization.Address?.StreetAddressOne,
         StreetAddressTwo = matchedOrganization.Address?.StreetAddressTwo,

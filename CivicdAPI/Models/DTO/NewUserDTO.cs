@@ -6,7 +6,7 @@ using System.Web;
 
 namespace CivicdAPI.Models.DTO
 {
-  public class NewOrganizationDTO
+  public class NewUserDTO
   {
     [Required]
     public string Email { get; set; }
@@ -16,7 +16,7 @@ namespace CivicdAPI.Models.DTO
     [Required]
     public string Password { get; set; }
     [Required]
-    public int OrganizationCategory { get; set; }
+    public int Category { get; set; }
     public string PhoneNumber { get; set; }
     public string ProfileDescription { get; set; }
     public string StreetAddressOne { get; set; }
