@@ -35,14 +35,12 @@ namespace CivicdAPI.Controllers
           ZipCode = user.ZipCode
         };
 
-        List<Tag> tags = context.Tags.SelectMany(t => user.Tags, (t, ot) => new { t, ot })
-          .Where(@t1 => @t1.t.Name == @t1.ot.Name)
-          .Select(@t1 => new Tag()
-          {
-            ID = @t1.t.ID,
-            Name = @t1.t.Name
-          }).ToList();
+        List<Tag> dbTags = context.Tags.ToList();
 
+        List<Tag> tags = dbTags.Where(t => user.Tags.Any(ot => ot.Name == t.Name)).ToList();
+
+        var userManager = new UserManager<ApplicationUser>(
+          new UserStore<ApplicationUser>(context));
 
         var userEntity = new ApplicationUser()
         {
@@ -59,37 +57,47 @@ namespace CivicdAPI.Controllers
           Tags = tags
         };
 
-        context.Users.Add(userEntity);
-
-        var userManager = new UserManager<ApplicationUser>(
-          new UserStore<ApplicationUser>(context));
-        var userId = userManager.FindByEmail(user.Email).Id;
-        if (user.Category == 0)
+        if (!context.Users.Any(u => u.Email == user.Email))
         {
-          userManager.AddToRole(userId, "User");
+          userManager.Create(userEntity);
         }
         else
         {
-          userManager.AddToRole(userId, "user");
+          throw new Exception("A user by that e-mail already exists. Please specify a different e-mail.");
+        }
+
+        var userCreated = userManager.FindByEmail(user.Email);
+        if (user.Category == 0)
+        {
+          userManager.AddToRole(userCreated.Id, "User");
+        }
+        else
+        {
+          userManager.AddToRole(userCreated.Id, "Organization");
         }
 
         context.SaveChanges();
 
         return new UserDTO()
         {
-          City = user.City,
-          DisplayName = user.DisplayName,
-          Email = user.Email,
-          FirstName = user.FirstName,
-          LastName = user.LastName,
-          Category = user.Category,
-          PhoneNumber = user.PhoneNumber,
-          ProfileDescription = user.ProfileDescription,
-          State = user.State,
-          StreetAddressOne = user.StreetAddressOne,
-          StreetAddressTwo = user.StreetAddressTwo,
-          ZipCode = user.ZipCode,
-          Tags = user.Tags
+          City = userCreated.Address.City,
+          DisplayName = userCreated.DisplayName,
+          Email = userCreated.Email,
+          FirstName = userCreated.FirstName,
+          LastName = userCreated.LastName,
+          Category = (int)userCreated.Category,
+          PhoneNumber = userCreated.PhoneNumber,
+          ProfileDescription = userCreated.ProfileDescription,
+          State = userCreated.Address.State,
+          StreetAddressOne = userCreated.Address.StreetAddressOne,
+          StreetAddressTwo = userCreated.Address.StreetAddressTwo,
+          ZipCode = userCreated.Address.ZipCode,
+          Tags = from t in userCreated.Tags
+                 select new TagDTO()
+                 {
+                   Id = t.ID,
+                   Name = t.Name
+                 }
         };
       }
     }
@@ -102,7 +110,11 @@ namespace CivicdAPI.Controllers
       using (var context = new ApplicationDbContext())
       {
         var loggedInUser = User.Identity.GetUserId();
-        var selectedUser = context.Users.FirstOrDefault(o => o.Email == userEmail);
+
+        var userManager = new UserManager<ApplicationUser>(
+          new UserStore<ApplicationUser>(context));
+
+        var selectedUser = userManager.FindByEmail(user.Email);
 
         if (selectedUser == null)
         {
@@ -113,7 +125,9 @@ namespace CivicdAPI.Controllers
           throw new HttpResponseException(System.Net.HttpStatusCode.Forbidden);
         }
 
-        var tags = context.Tags.Where(t => user.Tags.Any(ot => ot.Name == t.Name)).ToList();
+        List<Tag> dbTags = context.Tags.ToList();
+
+        List<Tag> tags = dbTags.Where(t => user.Tags.Any(ot => ot.Name == t.Name)).ToList();
 
         selectedUser.Address.StreetAddressOne = user.StreetAddressOne;
         selectedUser.Address.StreetAddressTwo = user.StreetAddressTwo;
@@ -129,9 +143,31 @@ namespace CivicdAPI.Controllers
         selectedUser.ProfileDescription = user.ProfileDescription;
         selectedUser.Tags = tags;
 
+        userManager.Update(selectedUser);
+
         context.SaveChanges();
 
-        return user;
+        return new UserDTO()
+        {
+          City = selectedUser.Address.City,
+          DisplayName = selectedUser.DisplayName,
+          Email = selectedUser.Email,
+          FirstName = selectedUser.FirstName,
+          LastName = selectedUser.LastName,
+          Category = (int)selectedUser.Category,
+          PhoneNumber = selectedUser.PhoneNumber,
+          ProfileDescription = selectedUser.ProfileDescription,
+          State = selectedUser.Address.State,
+          StreetAddressOne = selectedUser.Address.StreetAddressOne,
+          StreetAddressTwo = selectedUser.Address.StreetAddressTwo,
+          ZipCode = selectedUser.Address.ZipCode,
+          Tags = from t in selectedUser.Tags
+                 select new TagDTO()
+                 {
+                   Id = t.ID,
+                   Name = t.Name
+                 }
+        };
       }
     }
 
