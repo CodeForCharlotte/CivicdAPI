@@ -26,6 +26,9 @@ namespace CivicdAPI.Controllers
         {
           throw new HttpResponseException(System.Net.HttpStatusCode.Forbidden);
         }
+
+        AssertIsValid((OrganizationCategory)user.Category);
+
         var password = GeneratePasswordHash(user.Password);
         var address = new Address()
         {
@@ -47,7 +50,7 @@ namespace CivicdAPI.Controllers
         {
           Address = address,
           Category = (OrganizationCategory)user.Category,
-          DisplayName = user.DisplayName,
+          DisplayName = !string.IsNullOrEmpty(user.DisplayName) ? user.DisplayName : user.FirstName + user.LastName,
           Email = user.Email,
           FirstName = user.FirstName,
           LastName = user.LastName,
@@ -258,6 +261,16 @@ namespace CivicdAPI.Controllers
       }
 
       return newValue;
+    }
+
+    private bool AssertIsValid(Enum enumValue)
+    {
+      if (!Enum.IsDefined(enumValue.GetType(), enumValue))
+      {
+        throw new ArgumentException("Organization Category is invalid.");
+      }
+
+      return true;
     }
   }
 }
