@@ -29,7 +29,6 @@ namespace CivicdAPI.Controllers
 
         AssertIsValid((OrganizationCategory)user.Category);
 
-        var password = GeneratePasswordHash(user.Password);
         var address = new Address()
         {
           StreetAddressOne = user.StreetAddressOne,
@@ -54,7 +53,6 @@ namespace CivicdAPI.Controllers
           Email = user.Email,
           FirstName = user.FirstName,
           LastName = user.LastName,
-          PasswordHash = password,
           PhoneNumber = user.PhoneNumber,
           ProfileDescription = user.ProfileDescription,
           UserName = user.Email,
@@ -71,6 +69,9 @@ namespace CivicdAPI.Controllers
         }
 
         var userCreated = userManager.FindByEmail(user.Email);
+
+        userManager.AddPassword(userCreated.Id, user.Password);
+
         if (user.Category == 0)
         {
           userManager.AddToRole(userCreated.Id, "User");
@@ -130,7 +131,13 @@ namespace CivicdAPI.Controllers
         }
 
         List<Tag> dbTags = context.Tags.ToList();
-        List<Tag> tags = dbTags.Where(t => user.Tags.Any(ot => ot.Name == t.Name)).ToList();
+        //List<Tag> tags = dbTags.Where(t => user.Tags.Any(ot => ot.Name == t.Name)).ToList();
+
+        if (!string.IsNullOrEmpty(user.NewPassword))
+        {
+          userManager.ChangePassword(selectedUser.Id, user.OldPassword, user.NewPassword);
+        }
+
 
         if (selectedUser.Address != null)
         {
@@ -162,6 +169,8 @@ namespace CivicdAPI.Controllers
           Email = selectedUser.Email,
           FirstName = selectedUser.FirstName,
           LastName = selectedUser.LastName,
+          OldPassword = "Successfully changed",
+          NewPassword = "Successfully changed",
           Category = (int)selectedUser.Category,
           PhoneNumber = selectedUser.PhoneNumber,
           ProfileDescription = selectedUser.ProfileDescription,
@@ -235,22 +244,6 @@ namespace CivicdAPI.Controllers
           ZipCode = user.Address.ZipCode
         };
       }
-    }
-
-    private string GeneratePasswordHash(string passwordPlaintext)
-    {
-      byte[] salt;
-      new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-
-      var pbkdf2 = new Rfc2898DeriveBytes(passwordPlaintext, salt, 10000);
-      byte[] hash = pbkdf2.GetBytes(20);
-
-      byte[] hashBytes = new byte[36];
-      Array.Copy(salt, 0, hashBytes, 0, 16);
-      Array.Copy(hash, 0, hashBytes, 16, 20);
-
-      string savedPasswordHash = Convert.ToBase64String(hashBytes);
-      return savedPasswordHash;
     }
 
     private string SetNewValue(string newValue = null, string oldValue = null)
