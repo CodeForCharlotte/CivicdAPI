@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.Http;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace CivicdAPI.Controllers
@@ -114,7 +115,7 @@ namespace CivicdAPI.Controllers
         var userManager = new UserManager<ApplicationUser>(
           new UserStore<ApplicationUser>(context));
 
-        var selectedUser = userManager.FindByEmail(user.Email);
+        var selectedUser = userManager.FindByEmail(userEmail);
 
         if (selectedUser == null)
         {
@@ -126,22 +127,26 @@ namespace CivicdAPI.Controllers
         }
 
         List<Tag> dbTags = context.Tags.ToList();
-
         List<Tag> tags = dbTags.Where(t => user.Tags.Any(ot => ot.Name == t.Name)).ToList();
 
-        selectedUser.Address.StreetAddressOne = user.StreetAddressOne;
-        selectedUser.Address.StreetAddressTwo = user.StreetAddressTwo;
-        selectedUser.Address.City = user.City;
-        selectedUser.Address.State = user.State;
-        selectedUser.Address.ZipCode = user.ZipCode;
-        selectedUser.Category = (OrganizationCategory)user.Category;
-        selectedUser.DisplayName = user.DisplayName;
-        selectedUser.Email = user.Email;
-        selectedUser.FirstName = user.FirstName;
-        selectedUser.LastName = user.LastName;
-        selectedUser.PhoneNumber = user.PhoneNumber;
-        selectedUser.ProfileDescription = user.ProfileDescription;
-        selectedUser.Tags = tags;
+        if (selectedUser.Address != null)
+        {
+          selectedUser.Address.StreetAddressOne =
+          SetNewValue(user.StreetAddressOne, selectedUser.Address.StreetAddressOne);
+          selectedUser.Address.StreetAddressTwo =
+            SetNewValue(user.StreetAddressTwo, selectedUser.Address.StreetAddressTwo);
+          selectedUser.Address.City = SetNewValue(user.City, selectedUser.Address.City);
+          selectedUser.Address.State = SetNewValue(user.State, selectedUser.Address.State);
+          selectedUser.Address.ZipCode = SetNewValue(user.ZipCode, selectedUser.Address.ZipCode);
+        }
+        selectedUser.Category = user.Category != 0 ? (OrganizationCategory)user.Category : selectedUser.Category;
+        selectedUser.DisplayName = SetNewValue(user.DisplayName, selectedUser.DisplayName);
+        selectedUser.Email = SetNewValue(user.Email, selectedUser.Email);
+        selectedUser.FirstName = SetNewValue(user.FirstName, selectedUser.FirstName);
+        selectedUser.LastName = SetNewValue(user.LastName, selectedUser.LastName);
+        selectedUser.PhoneNumber = SetNewValue(user.PhoneNumber, selectedUser.PhoneNumber);
+        selectedUser.ProfileDescription = SetNewValue(user.ProfileDescription, selectedUser.ProfileDescription);
+        //selectedUser.Tags = tags;
 
         userManager.Update(selectedUser);
 
@@ -157,9 +162,9 @@ namespace CivicdAPI.Controllers
           Category = (int)selectedUser.Category,
           PhoneNumber = selectedUser.PhoneNumber,
           ProfileDescription = selectedUser.ProfileDescription,
-          State = selectedUser.Address.State,
-          StreetAddressOne = selectedUser.Address.StreetAddressOne,
-          StreetAddressTwo = selectedUser.Address.StreetAddressTwo,
+          State = selectedUser.Address?.State,
+          StreetAddressOne = selectedUser.Address?.StreetAddressOne,
+          StreetAddressTwo = selectedUser.Address?.StreetAddressTwo,
           ZipCode = selectedUser.Address.ZipCode,
           Tags = from t in selectedUser.Tags
                  select new TagDTO()
@@ -243,6 +248,16 @@ namespace CivicdAPI.Controllers
 
       string savedPasswordHash = Convert.ToBase64String(hashBytes);
       return savedPasswordHash;
+    }
+
+    private string SetNewValue(string newValue = null, string oldValue = null)
+    {
+      if (string.IsNullOrEmpty(newValue))
+      {
+        return oldValue;
+      }
+
+      return newValue;
     }
   }
 }
