@@ -13,45 +13,6 @@ namespace CivicdAPI.Controllers
     public class ActivityActionController : ApiController
     {
 
-        /// <summary>
-        /// Get list of all activities in database.
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("activities")]
-        // GET: api/Activities
-        public IHttpActionResult Get()
-        {
-            using (var db = new ApplicationDbContext())
-            {
-
-                var activities = from a in db.Activities
-                                 select new ActivityDTO()
-                                 {
-                                     Id = a.ID,
-                                     DisplayTitle = a.DisplayTitle,
-                                     Description = a.Description,
-                                     CategoryName = a.Category.ToString(),
-                                     PhotoURL = a.Photo,
-                                     StartTime = a.StartTime.ToString(),
-                                     EndTime = a.EndTime.ToString(),
-                                     AddressDisplayName = a.Address.Name,
-                                     StreetAddressOne = a.Address.StreetAddressOne,
-                                     StreetAddressTwo = a.Address.StreetAddressTwo,
-                                     City = a.Address.City,
-                                     State = a.Address.State,
-                                     ZipCode = a.Address.ZipCode,
-                                     Tags = from t in a.Tags
-                                            select new TagDTO()
-                                            {
-                                                Id = t.ID,
-                                                Name = t.Name
-                                            }
-                                 };
-                return Ok(activities?.ToList());
-            }
-        }
-
         // GET: api/Activities/5
         [Route("activities/{id:int}")]
         [HttpGet]
@@ -127,13 +88,13 @@ namespace CivicdAPI.Controllers
 
         [HttpGet]
         [Route("activities")]
-        public IHttpActionResult GetByDateRange(DateTime startDate, DateTime endDate)
+        public IHttpActionResult GetByDateRange(DateTime? startDate = null, DateTime? endDate = null)
         {
             using (var db = new ApplicationDbContext())
             {
                 var activities = db.Activities
                         .Include("Tags")
-                        .Where(act => act.StartTime <= startDate && act.EndTime >= endDate)
+                        .Where(act => (startDate == null && endDate == null) || (act.StartTime <= startDate && act.EndTime >= endDate))
                         .Select(act => new ActivityDTO
                         {
                             AddressDisplayName = act.Address.Name,
