@@ -4,11 +4,5 @@
         <name>CivicdAPI</name>
     </assembly>
     <members>
-        <member name="M:CivicdAPI.Controllers.ActivityActionController.Get">
-            <summary>
-            Get list of all activities in database.
-            </summary>
-            <returns></returns>
-        </member>
     </members>
 </doc>
