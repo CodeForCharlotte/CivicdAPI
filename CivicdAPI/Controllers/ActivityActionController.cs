@@ -1,7 +1,9 @@
 ﻿using CivicdAPI.Models;
 using CivicdAPI.Models.DTO;
 using Microsoft.AspNet.Identity;
+using Swashbuckle.Swagger.Annotations;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
@@ -12,8 +14,12 @@ namespace CivicdAPI.Controllers
     [RoutePrefix("api")]
     public class ActivityActionController : ApiController
     {
-
-        // GET: api/Activities/5
+        /// <summary>
+        /// Get Activity by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ActivityDTO))]
         [Route("activities/{id:int}")]
         [HttpGet]
         public IHttpActionResult Get(int id)
@@ -48,6 +54,12 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get activities by tag
+        /// </summary>
+        /// <param name="tagName"></param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ActivityDTO))]
         [Route("activities/tags/{tagName}/")]
         [HttpGet]
         public IHttpActionResult GetByTag(string tagName)
@@ -86,6 +98,13 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get activity. This will either get all activities or get a range of activities by date range.
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ActivityDTO))]
         [HttpGet]
         [Route("activities")]
         public IHttpActionResult GetByDateRange(DateTime? startDate = null, DateTime? endDate = null)
@@ -120,7 +139,12 @@ namespace CivicdAPI.Controllers
             }
         }
 
-        // GET: api/Activities/
+        /// <summary>
+        /// Get activities by category
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ActivityDTO))]
         [HttpGet]
         [Route("activities/categories/{categoryName}/")]
         public IHttpActionResult GetCategory(string categoryName)
@@ -156,6 +180,12 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get activities by organization
+        /// </summary>
+        /// <param name="organizationUserName"></param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ActivityDTO))]
         [HttpGet]
         [Route("activities/organizations/{organizationUserName}/")]
         public IHttpActionResult GetByOrganization(string organizationUserName)
@@ -193,6 +223,12 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get activities by username
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ActivityDTO))]
         [HttpGet]
         [Route("activities/users/{userName}/")]
         public IHttpActionResult GetByUser(string userName)
@@ -240,6 +276,12 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// RSVP to an activity
+        /// </summary>
+        /// <param name="activityId"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("activities/{activityId:int}/rsvps/{userName}/")]
         public IHttpActionResult RSVP(int activityId, string userName)
@@ -273,6 +315,12 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Check in for an Activity
+        /// </summary>
+        /// <param name="activityId"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("activities/{activityId:int}/checkins/{userName}/")]
         public IHttpActionResult CheckInActivity(int activityId, string userName)
@@ -302,7 +350,13 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Add an Activity
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
         [HttpPost]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ActivityDTO))]
         [Route("activities")]
         public ActivityDTO CreateActivity(ActivityDTO activity)
         {
@@ -358,7 +412,14 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Update an Activity
+        /// </summary>
+        /// <param name="activityId"></param>
+        /// <param name="activity"></param>
+        /// <returns></returns>
         [HttpPut]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ActivityDTO))]
         [Route("activities/{activityId:int}")]
         public ActivityDTO UpdateActivity(int activityId, ActivityDTO activity)
         {
@@ -415,7 +476,13 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete an Activity
+        /// </summary>
+        /// <param name="activityId"></param>
+        /// <returns></returns>
         [HttpDelete]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
         [Route("activities/{activityId:int}")]
         public bool DeleteActivity(int activityId)
         {

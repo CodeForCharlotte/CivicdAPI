@@ -1,10 +1,12 @@
 ﻿using CivicdAPI.Models;
 using CivicdAPI.Models.DTO;
 using Microsoft.AspNet.Identity;
+using Swashbuckle.Swagger.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.Http;
@@ -15,6 +17,12 @@ namespace CivicdAPI.Controllers
     [RoutePrefix("api")]
     public class OrganizationController : ApiController
     {
+        /// <summary>
+        /// Create An Organization
+        /// </summary>
+        /// <param name="organization"></param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(TagDTO))]
         [HttpPost]
         [Route("organizations")]
         public OrganizationDTO CreateOrganization(NewOrganizationDTO organization)
@@ -74,6 +82,12 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Update Organization
+        /// </summary>
+        /// <param name="organizationEmail"></param>
+        /// <param name="organization"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("organizations/{organizationEmail}/")]
         public OrganizationDTO UpdateOrganization(string organizationEmail, [FromBody] OrganizationDTO organization)
@@ -114,6 +128,11 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete an Organization
+        /// </summary>
+        /// <param name="organizationEmail"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("organizations/{organizationEmail}/")]
         public IHttpActionResult DeleteOrganization(string organizationEmail)
@@ -135,6 +154,11 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get Organization by Email
+        /// </summary>
+        /// <param name="organizationEmail"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("organizations/{organizationEmail}/")]
         public OrganizationDTO GetOrganization(string organizationEmail)

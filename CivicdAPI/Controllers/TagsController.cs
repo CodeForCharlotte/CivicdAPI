@@ -1,5 +1,6 @@
 ﻿using CivicdAPI.Models;
 using CivicdAPI.Models.DTO;
+using Swashbuckle.Swagger.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,12 @@ namespace CivicdAPI.Controllers
     [RoutePrefix("api/activities")]
     public class TagsController : ApiController
     {
+        /// <summary>
+        /// Create Tag
+        /// </summary>
+        /// <param name="tagName"></param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(TagDTO))]
         [HttpPost]
         [Route("tags/{tagName}")]
         public TagDTO CreateTag(string tagName)
@@ -43,6 +50,12 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a Tag
+        /// </summary>
+        /// <param name="tagName"></param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(bool))]
         [HttpDelete]
         [Route("tags/{tagName}")]
         public bool DeleteTag(string tagName)
@@ -65,6 +78,11 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get All Tags
+        /// </summary>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(TagDTO))]
         [HttpGet]
         [Route("tags")]
         public IEnumerable<TagDTO> GetAll()
