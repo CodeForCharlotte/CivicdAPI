@@ -229,6 +229,7 @@ namespace CivicdAPI.Migrations
                 p => p.ID,
                 new Address()
                 {
+                    Name = "City Council",
                     StreetAddressOne = "101 Main Street",
                     City = "Charlotte",
                     State = "NC",
@@ -236,6 +237,7 @@ namespace CivicdAPI.Migrations
                 },
                 new Address()
                 {
+                    Name = "Phone Bank",
                     StreetAddressOne = "2222 Ordinary Way",
                     City = "Charlotte",
                     State = "NC",
@@ -277,31 +279,29 @@ namespace CivicdAPI.Migrations
             context.SaveChanges();
 
             // Add Tags to Activities
-            var activity1 = context.Activities.Find(1);
-            var activity2 = context.Activities.Find(2);
-            var activity3 = context.Activities.Find(3);
-            var tag1 = context.Tags.Find(1);
-            var tag2 = context.Tags.Find(2);
-            var tag3 = context.Tags.Find(3);
-            var tag4 = context.Tags.Find(4);
+            var cityCouncil = context.Activities.SingleOrDefault(a => a.DisplayTitle == "City Council Meeting");
+            var phoneBank = context.Activities.SingleOrDefault(a => a.DisplayTitle == "Phone Bank");
+            var schoolMeeting = context.Activities.SingleOrDefault(a => a.DisplayTitle == "School Meeting");
+            var libertarism = context.Tags.SingleOrDefault(t => t.Name == "Libertarism");
+            var police = context.Tags.SingleOrDefault(t => t.Name == "Police");
+            var entitlement = context.Tags.SingleOrDefault(t => t.Name == "Entitlements");
+            var activism = context.Tags.SingleOrDefault(t => t.Name == "Activism");
 
-            activity1.Tags.Add(tag1);
-            activity1.Tags.Add(tag2);
-            activity2.Tags.Add(tag3);
-            activity3.Tags.Add(tag3);
-            activity3.Tags.Add(tag1);
-            activity3.Tags.Add(tag2);
-            activity3.Tags.Add(tag4);
+            cityCouncil.Tags.Add(libertarism);
+            cityCouncil.Tags.Add(police);
+            phoneBank.Tags.Add(entitlement);
+            schoolMeeting.Tags.Add(entitlement);
+            schoolMeeting.Tags.Add(libertarism);
+            schoolMeeting.Tags.Add(police);
+            schoolMeeting.Tags.Add(activism);
 
             // Add Address to Activity
-            var address1 = context.Addresses.Find(1);
-            var address2 = context.Addresses.Find(2);
-            activity1.Address = address1;
-            activity2.Address = address2;
+            var cistyCouncilAddress = context.Addresses.SingleOrDefault(a => a.Name == "City Council");
+            var phoneBankAddress = context.Addresses.SingleOrDefault(a => a.Name == "Phone Bank");
+            cityCouncil.Address = cistyCouncilAddress;
+            phoneBank.Address = phoneBankAddress;
 
-            context.SaveChanges();
-
-          
+            context.SaveChanges();          
         }
     }
 }
