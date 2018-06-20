@@ -1,7 +1,9 @@
 ﻿using CivicdAPI.Models;
 using Microsoft.AspNet.Identity.Owin;
+using Swashbuckle.Swagger.Annotations;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -29,6 +31,12 @@ namespace CivicdAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get User by Email
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(UserViewModel))]
         [HttpGet]
         [Route("User/{userEmail}")]
         public async Task<UserViewModel> GetUserByEmail(string userEmail)
@@ -62,6 +70,12 @@ namespace CivicdAPI.Controllers
 
         }
 
+        /// <summary>
+        /// Get Organization by Organization Id
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(UserViewModel))]
         [HttpGet]
         [Route("Organizations/{organizationId}")]
         public async Task<OrganizationDTO> GetOrganizationById(string organizationId)

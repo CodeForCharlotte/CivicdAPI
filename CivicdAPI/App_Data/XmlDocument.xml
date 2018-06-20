@@ -4,5 +4,149 @@
         <name>CivicdAPI</name>
     </assembly>
     <members>
+        <member name="M:CivicdAPI.Controllers.ActivityActionController.Get(System.Int32)">
+            <summary>
+            Get Activity by Id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.ActivityActionController.GetByTag(System.String)">
+            <summary>
+            Get activities by tag
+            </summary>
+            <param name="tagName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.ActivityActionController.GetByDateRange(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Get activity. This will either get all activities or get a range of activities by date range.
+            </summary>
+            <param name="startDate"></param>
+            <param name="endDate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.ActivityActionController.GetCategory(System.String)">
+            <summary>
+            Get activities by category
+            </summary>
+            <param name="categoryName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.ActivityActionController.GetByOrganization(System.String)">
+            <summary>
+            Get activities by organization
+            </summary>
+            <param name="organizationUserName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.ActivityActionController.GetByUser(System.String)">
+            <summary>
+            Get activities by username
+            </summary>
+            <param name="userName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.ActivityActionController.RSVP(System.Int32,System.String)">
+            <summary>
+            RSVP to an activity
+            </summary>
+            <param name="activityId"></param>
+            <param name="userName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.ActivityActionController.CheckInActivity(System.Int32,System.String)">
+            <summary>
+            Check in for an Activity
+            </summary>
+            <param name="activityId"></param>
+            <param name="userName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.ActivityActionController.CreateActivity(CivicdAPI.Models.DTO.ActivityDTO)">
+            <summary>
+            Add an Activity
+            </summary>
+            <param name="activity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.ActivityActionController.UpdateActivity(System.Int32,CivicdAPI.Models.DTO.ActivityDTO)">
+            <summary>
+            Update an Activity
+            </summary>
+            <param name="activityId"></param>
+            <param name="activity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.ActivityActionController.DeleteActivity(System.Int32)">
+            <summary>
+            Delete an Activity
+            </summary>
+            <param name="activityId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.OrganizationController.CreateOrganization(CivicdAPI.Models.DTO.NewOrganizationDTO)">
+            <summary>
+            Create An Organization
+            </summary>
+            <param name="organization"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.OrganizationController.UpdateOrganization(System.String,CivicdAPI.Models.OrganizationDTO)">
+            <summary>
+            Update Organization
+            </summary>
+            <param name="organizationEmail"></param>
+            <param name="organization"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.OrganizationController.DeleteOrganization(System.String)">
+            <summary>
+            Delete an Organization
+            </summary>
+            <param name="organizationEmail"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.OrganizationController.GetOrganization(System.String)">
+            <summary>
+            Get Organization by Email
+            </summary>
+            <param name="organizationEmail"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.ProfileController.GetUserByEmail(System.String)">
+            <summary>
+            Get User by Email
+            </summary>
+            <param name="userEmail"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.ProfileController.GetOrganizationById(System.String)">
+            <summary>
+            Get Organization by Organization Id
+            </summary>
+            <param name="organizationId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.TagsController.CreateTag(System.String)">
+            <summary>
+            Create Tag
+            </summary>
+            <param name="tagName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.TagsController.DeleteTag(System.String)">
+            <summary>
+            Delete a Tag
+            </summary>
+            <param name="tagName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CivicdAPI.Controllers.TagsController.GetAll">
+            <summary>
+            Get All Tags
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>
