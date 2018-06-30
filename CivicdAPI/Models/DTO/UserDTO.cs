@@ -13,7 +13,6 @@ namespace CivicdAPI.Models
     public string DisplayName { get; set; }
     public string OldPassword { get; set; }
     public string NewPassword { get; set; }
-    [Required]
     public int Category { get; set; }
     public string PhoneNumber { get; set; }
     public string ProfileDescription { get; set; }

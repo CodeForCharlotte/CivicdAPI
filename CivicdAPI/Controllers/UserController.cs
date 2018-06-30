@@ -131,7 +131,7 @@ namespace CivicdAPI.Controllers
         }
 
         List<Tag> dbTags = context.Tags.ToList();
-        //List<Tag> tags = dbTags.Where(t => user.Tags.Any(ot => ot.Name == t.Name)).ToList();
+        List<Tag> tags = dbTags.Where(t => user.Tags.Any(ot => ot.Name == t.Name)).ToList();
 
         if (!string.IsNullOrEmpty(user.NewPassword))
         {
@@ -149,14 +149,18 @@ namespace CivicdAPI.Controllers
           selectedUser.Address.State = SetNewValue(user.State, selectedUser.Address.State);
           selectedUser.Address.ZipCode = SetNewValue(user.ZipCode, selectedUser.Address.ZipCode);
         }
-        selectedUser.Category = user.Category != 0 ? (OrganizationCategory)user.Category : selectedUser.Category;
         selectedUser.DisplayName = SetNewValue(user.DisplayName, selectedUser.DisplayName);
         selectedUser.Email = SetNewValue(user.Email, selectedUser.Email);
         selectedUser.FirstName = SetNewValue(user.FirstName, selectedUser.FirstName);
         selectedUser.LastName = SetNewValue(user.LastName, selectedUser.LastName);
         selectedUser.PhoneNumber = SetNewValue(user.PhoneNumber, selectedUser.PhoneNumber);
         selectedUser.ProfileDescription = SetNewValue(user.ProfileDescription, selectedUser.ProfileDescription);
-        //selectedUser.Tags = tags;
+        selectedUser.Tags = tags;
+
+        if (User.IsInRole("Organization") || User.IsInRole("Admin") && user.Category < 7 && user.Category > 0)
+        {
+          selectedUser.Category = (OrganizationCategory)user.Category;
+        }
 
         userManager.Update(selectedUser);
 
