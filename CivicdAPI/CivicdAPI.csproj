@@ -236,35 +236,35 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Migrations\201801140005599_CreateUser.cs" />
+    <Compile Include="Migrations\201801140005599_CreateUser.cs" />
     <Compile Include="Migrations\201801140005599_CreateUser.Designer.cs">
       <DependentUpon>201801140005599_CreateUser.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Migrations\201801140056334_SeedActivity.cs" />
+    <Compile Include="Migrations\201801140056334_SeedActivity.cs" />
     <Compile Include="Migrations\201801140056334_SeedActivity.Designer.cs">
       <DependentUpon>201801140056334_SeedActivity.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Migrations\201801141547528_AddPhoto.cs" />
+    <Compile Include="Migrations\201801141547528_AddPhoto.cs" />
     <Compile Include="Migrations\201801141547528_AddPhoto.Designer.cs">
       <DependentUpon>201801141547528_AddPhoto.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Migrations\201801141628436_TagActivityJoinTable.cs" />
+    <Compile Include="Migrations\201801141628436_TagActivityJoinTable.cs" />
     <Compile Include="Migrations\201801141628436_TagActivityJoinTable.Designer.cs">
       <DependentUpon>201801141628436_TagActivityJoinTable.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Migrations\201801141656447_Category.cs" />
+    <Compile Include="Migrations\201801141656447_Category.cs" />
     <Compile Include="Migrations\201801141656447_Category.Designer.cs">
       <DependentUpon>201801141656447_Category.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Migrations\201801240138377_AddAddress.cs" />
+    <Compile Include="Migrations\201801240138377_AddAddress.cs" />
     <Compile Include="Migrations\201801240138377_AddAddress.Designer.cs">
       <DependentUpon>201801240138377_AddAddress.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Migrations\201801240158061_UserTags.cs" />
+    <Compile Include="Migrations\201801240158061_UserTags.cs" />
     <Compile Include="Migrations\201801240158061_UserTags.Designer.cs">
       <DependentUpon>201801240158061_UserTags.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Migrations\201802042224318_AddressName.cs" />
+    <Compile Include="Migrations\201802042224318_AddressName.cs" />
     <Compile Include="Migrations\201802042224318_AddressName.Designer.cs">
       <DependentUpon>201802042224318_AddressName.cs</DependentUpon>
     </Compile>
