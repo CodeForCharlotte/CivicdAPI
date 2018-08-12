@@ -10,7 +10,6 @@ using System.Web.Http;
 
 namespace CivicdAPI.Controllers
 {
-    [Authorize]
     [RoutePrefix("api/activities")]
     public class TagsController : ApiController
     {
