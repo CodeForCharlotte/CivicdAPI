@@ -14,7 +14,7 @@ namespace CivicdAPI.Models.DTO
     [Required]
     public string DisplayTitle { get; set; }
     public string Description { get; set; }
-    public string CategoryName { get; set; }
+    public int Category { get; set; }
     public string PhotoURL { get; set; }
     [Required]
     public string StartTime { get; set; }
@@ -25,6 +25,7 @@ namespace CivicdAPI.Models.DTO
     public string City { get; set; }
     public string State { get; set; }
     public string ZipCode { get; set; }
+    public string OrganizationEmail { get; set; }
 
     public UserDTO Organization { get; set; }
     public IEnumerable<TagDTO> Tags { get; set; }

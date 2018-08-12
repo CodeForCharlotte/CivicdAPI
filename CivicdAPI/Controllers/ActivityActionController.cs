@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
+using Microsoft.Ajax.Utilities;
 
 namespace CivicdAPI.Controllers
 {
@@ -33,7 +34,7 @@ namespace CivicdAPI.Controllers
                                      Id = a.ID,
                                      DisplayTitle = a.DisplayTitle,
                                      Description = a.Description,
-                                     CategoryName = a.Category.ToString(),
+                                     Category = (int)a.Category,
                                      PhotoURL = a.Photo,
                                      StartTime = a.StartTime.ToString(),
                                      EndTime = a.EndTime.ToString(),
@@ -75,7 +76,7 @@ namespace CivicdAPI.Controllers
                 var activities = tag.Activities.Select(act => new ActivityDTO
                 {
                     AddressDisplayName = act.Address.Name,
-                    CategoryName = act.Category.ToString(),
+                    Category = (int)act.Category,
                     City = act.Address.City,
                     Description = act.Description,
                     DisplayTitle = act.DisplayTitle,
@@ -117,7 +118,7 @@ namespace CivicdAPI.Controllers
                         .Select(act => new ActivityDTO
                         {
                             AddressDisplayName = act.Address.Name,
-                            CategoryName = act.Category.ToString(),
+                            Category = (int)act.Category,
                             City = act.Address.City,
                             Description = act.Description,
                             DisplayTitle = act.DisplayTitle,
@@ -161,7 +162,7 @@ namespace CivicdAPI.Controllers
                                      Id = a.ID,
                                      DisplayTitle = a.DisplayTitle,
                                      Description = a.Description,
-                                     CategoryName = a.Category.ToString(),
+                                     Category = (int)a.Category,
                                      PhotoURL = a.Photo,
                                      StartTime = a.StartTime.ToString(),
                                      EndTime = a.EndTime.ToString(),
@@ -201,7 +202,7 @@ namespace CivicdAPI.Controllers
                 var activityModels = activities.Select(act => new ActivityDTO
                 {
                     AddressDisplayName = act.Address.Name,
-                    CategoryName = act.Category.ToString(),
+                    Category = (int)act.Category,
                     City = act.Address.City,
                     Description = act.Description,
                     DisplayTitle = act.DisplayTitle,
@@ -253,7 +254,7 @@ namespace CivicdAPI.Controllers
                 var models = activities.Select(act => new ActivityDTO
                 {
                     AddressDisplayName = act.Address.Name,
-                    CategoryName = act.Category.ToString(),
+                    Category = (int)act.Category,
                     City = act.Address.City,
                     Description = act.Description,
                     DisplayTitle = act.DisplayTitle,
@@ -364,7 +365,8 @@ namespace CivicdAPI.Controllers
             {
                 var loggedInUser = User.Identity.GetUserId();
                 var user = context.Users.Single(u => u.Id == loggedInUser);
-                var organization = context.Users.Single(u => u.Email == activity.Organization.Email);
+                var organizationEmail = activity.Organization?.Email ?? activity.OrganizationEmail;
+                var organization = context.Users.Single(u => u.Email == organizationEmail);
 
                 var userIsAdmin = User.IsInRole("Admin");
                 var userIsOrg = User.IsInRole("Organization");
@@ -372,13 +374,16 @@ namespace CivicdAPI.Controllers
                 {
                     throw new HttpResponseException(HttpStatusCode.Forbidden);
                 }
+              DateTimeOffset endTime2;
+              var endTime = DateTimeOffset.TryParse(activity.EndTime, out endTime2);
+                
 
                 var activityEntity = new Activity()
                 {
                     DisplayTitle = activity.DisplayTitle,
-                    Category = (ActivityCategory)Enum.Parse(typeof(ActivityCategory), activity.CategoryName, true),
+                    Category = (ActivityCategory)activity.Category,
                     StartTime = DateTimeOffset.Parse(activity.StartTime),
-                    EndTime = DateTimeOffset.Parse(activity.EndTime)
+                    EndTime = endTime2
                 };
 
                 if (!String.IsNullOrEmpty(activity.StreetAddressOne))
@@ -443,7 +448,7 @@ namespace CivicdAPI.Controllers
                 }
 
                 activityEntity.DisplayTitle = activity.DisplayTitle;
-                activityEntity.Category = (ActivityCategory)Enum.Parse(typeof(ActivityCategory), activity.CategoryName);
+                activityEntity.Category = (ActivityCategory)activity.Category;
                 activityEntity.StartTime = DateTimeOffset.Parse(activity.StartTime);
                 activityEntity.EndTime = DateTimeOffset.Parse(activity.EndTime);
                 if (!String.IsNullOrEmpty(activity.StreetAddressOne))
