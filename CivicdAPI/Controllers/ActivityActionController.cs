@@ -373,12 +373,16 @@ namespace CivicdAPI.Controllers
                     throw new HttpResponseException(HttpStatusCode.Forbidden);
                 }
 
+                DateTimeOffset endDate;
+
+                DateTimeOffset.TryParse(activity.EndTime, out endDate);
+                
                 var activityEntity = new Activity()
                 {
                     DisplayTitle = activity.DisplayTitle,
                     Category = (ActivityCategory)Enum.Parse(typeof(ActivityCategory), activity.CategoryName, true),
                     StartTime = DateTimeOffset.Parse(activity.StartTime),
-                    EndTime = DateTimeOffset.Parse(activity.EndTime)
+                    EndTime = endDate == default(DateTimeOffset) ? default(DateTimeOffset) : endDate
                 };
 
                 if (!String.IsNullOrEmpty(activity.StreetAddressOne))
@@ -445,7 +449,10 @@ namespace CivicdAPI.Controllers
                 activityEntity.DisplayTitle = activity.DisplayTitle;
                 activityEntity.Category = (ActivityCategory)Enum.Parse(typeof(ActivityCategory), activity.CategoryName);
                 activityEntity.StartTime = DateTimeOffset.Parse(activity.StartTime);
-                activityEntity.EndTime = DateTimeOffset.Parse(activity.EndTime);
+
+                var endDate = new DateTimeOffset();
+                DateTimeOffset.TryParse(activity.EndTime, out endDate);
+                activityEntity.EndTime = endDate == default(DateTimeOffset) ? default(DateTimeOffset?) : endDate;
                 if (!String.IsNullOrEmpty(activity.StreetAddressOne))
                 {
                     if (activityEntity.Address == null)
