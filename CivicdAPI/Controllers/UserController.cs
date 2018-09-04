@@ -130,9 +130,6 @@ namespace CivicdAPI.Controllers
                     throw new HttpResponseException(System.Net.HttpStatusCode.Forbidden);
                 }
 
-                List<Tag> dbTags = context.Tags.ToList();
-                List<Tag> tags = dbTags.Where(t => user.Tags.Any(ot => ot.Name == t.Name)).ToList();
-
                 if (!string.IsNullOrEmpty(user.NewPassword))
                 {
                     userManager.ChangePassword(selectedUser.Id, user.OldPassword, user.NewPassword);
@@ -155,7 +152,17 @@ namespace CivicdAPI.Controllers
                 selectedUser.LastName = SetNewValue(user.LastName, selectedUser.LastName);
                 selectedUser.PhoneNumber = SetNewValue(user.PhoneNumber, selectedUser.PhoneNumber);
                 selectedUser.ProfileDescription = SetNewValue(user.ProfileDescription, selectedUser.ProfileDescription);
-                UpdateTags(selectedUser.Tags, tags);
+
+                if (user.Tags != null && user.Tags.Any())
+                {
+                    ICollection<Tag> dbTags = new List<Tag>();
+                    foreach (var tag in user.Tags)
+                    {
+                        dbTags.Add(context.Tags.Find(tag.Id));
+                    }
+
+                    selectedUser.Tags = dbTags?.ToList();
+                }
 
                 if (User.IsInRole("Organization") || User.IsInRole("Admin") && user.Category < 7 && user.Category > 0)
                 {
