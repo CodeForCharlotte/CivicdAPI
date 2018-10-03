@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CivicdAPI", "CivicdAPI\CivicdAPI.csproj", "{D80F6652-F879-4746-A34E-57CF307F7C80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CivicdAPI.Web", "CivicdAPI.Web\CivicdAPI.Web.csproj", "{9E311733-01C8-4EBE-8648-F2F65ACEA709}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D80F6652-F879-4746-A34E-57CF307F7C80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D80F6652-F879-4746-A34E-57CF307F7C80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D80F6652-F879-4746-A34E-57CF307F7C80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E311733-01C8-4EBE-8648-F2F65ACEA709}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E311733-01C8-4EBE-8648-F2F65ACEA709}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E311733-01C8-4EBE-8648-F2F65ACEA709}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E311733-01C8-4EBE-8648-F2F65ACEA709}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
