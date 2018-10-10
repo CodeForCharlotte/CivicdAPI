@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Providers\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
