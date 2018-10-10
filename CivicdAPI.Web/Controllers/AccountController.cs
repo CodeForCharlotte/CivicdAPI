@@ -83,15 +83,6 @@ namespace CivicdAPI.Web.Controllers
             return Ok();
         }
 
-        // POST api/Account/RegisterExternal
-        [Route("RegisterExternal")]
-        [HttpPost]
-        public async Task<IActionResult> RegisterExternal(RegisterExternalBindingModel model)
-        {
-            return null;
-        }
-
-
         #region Helpers
 
         private IActionResult GetErrorResult(IdentityResult result)
