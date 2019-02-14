@@ -307,7 +307,7 @@ namespace CivicdAPI.Controllers
                 }
 
                 rsvp.Activity = activity;
-                rsvp.User = user;
+                //rsvp.User = user;
 
                 context.UserActivities.Add(rsvp);
                 context.SaveChanges();
@@ -357,7 +357,7 @@ namespace CivicdAPI.Controllers
         /// <param name="activity"></param>
         /// <returns></returns>
         [HttpPost]
-       // [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ActivityDTO))]
+        // [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ActivityDTO))]
         [Route("activities")]
         public ActionResult CreateActivity(ActivityDTO activity)
         {
@@ -402,7 +402,7 @@ namespace CivicdAPI.Controllers
                 var userActivity = new UserActivity()
                 {
                     Activity = activityEntity,
-                    User = user,
+                    //User = user,
                     Host = !userIsAdmin,
                     CheckedIn = organization.Id == user.Id
                 };

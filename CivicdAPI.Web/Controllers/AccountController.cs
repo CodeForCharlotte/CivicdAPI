@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using CivicdAPI.Web.Entities;
@@ -12,11 +14,14 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CivicdAPI.Web.Controllers
 {
@@ -24,94 +29,107 @@ namespace CivicdAPI.Web.Controllers
     [Route("api/Account")]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private ApplicationDbContext _context;
+        private IConfiguration _configuration;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(ApplicationDbContext context, IConfiguration configuration)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _context = context;
+            _configuration = configuration;
         }
 
-        // POST api/Account/Logout
-        [Route("Logout")]
-        [HttpPost]
-        public async Task<IActionResult> LogOutUser(string returnUrl = null)
-        {
-            await _signInManager.SignOutAsync();
-            if (returnUrl != null)
-            {
-                LocalRedirect(returnUrl); 
-            }
-            return Ok();
-        }
-
-        // POST api/Account/RemoveLogin
-        [Route("RemoveLogin")]
-        [HttpPost]
-        public async Task<IActionResult> RemoveLogin(RemoveLoginBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                throw new Exception("Invalid User.");
-            }
-            var result = await _userManager.RemoveLoginAsync(model.User, model.LoginProvider, model.ProviderKey);
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
-        }
-
-        // POST api/Account/Register
         [AllowAnonymous]
-        [Route("Register")]
         [HttpPost]
-        public async Task<IActionResult> Register(ApplicationUser model)
+        [Route("token")]
+        public IActionResult RequestToken([FromBody]TokenModel request)
         {
-            if (!ModelState.IsValid)
+            var user = _context.Users.FirstOrDefault(u => u.UserName == request.Username);
+            if (user == null)
             {
-                throw new Exception("Invalid User.");
-            }
-            var result = await _userManager.CreateAsync(model, model.PasswordHash);
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
+                throw new Exception($"Unable to find a user with Username: {request.Username}");
             }
 
-            return Ok();
+
+            if (!VerifyPassword(user.PasswordHash, request.Password))
+            {
+                return BadRequest("Could not verify username and password");
+            }
+
+            var token = new
+            {
+                Token = GenerateToken(request),
+                UserId = user.Id
+            };
+
+            return Ok(token);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("register")]
+        public IActionResult Register([FromBody]RegisterUserModel request)
+        {
+            var hash = GenerateHash(request.Password);
+
+            var existingUser = _context.Users.FirstOrDefault(u => u.UserName == request.UserName);
+
+            if (existingUser != null)
+            {
+                return BadRequest("this username is taken");
+            }
+
+            var user = new ApplicationUser()
+            {
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                PasswordHash = hash,
+                UserName = request.UserName
+            };
+
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            return Ok(user);
         }
 
         #region Helpers
 
-        private IActionResult GetErrorResult(IdentityResult result)
+        public string GenerateHash(string plainTextPassword)
         {
-            if (result == null)
+            return Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: plainTextPassword,
+                salt: new byte[0],
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+        }
+
+        public bool VerifyPassword(string passwordHash, string plainTextPassword)
+        {
+            // derive a 256-bit subkey (use HMACSHA1 with 10,000 iterations)
+            string hashed = GenerateHash(plainTextPassword);
+
+            return hashed == passwordHash;
+        }
+
+        public string GenerateToken(TokenModel request)
+        {
+            var claims = new[]
             {
-                return new StatusCodeResult(500);
-            }
+                new Claim(ClaimTypes.Name, request.Username)
+            };
 
-            if (!result.Succeeded)
-            {
-                if (result.Errors != null)
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(error.Code, error.Description);
-                    }
-                }
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecurityKey"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                if (ModelState.IsValid)
-                {
-                    // No ModelState errors are available to send, so just return an empty BadRequest.
-                    return BadRequest();
-                }
-
-                return BadRequest(ModelState);
-            }
-
-            return null;
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Uri"],
+                audience: _configuration["Uri"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(90),
+                signingCredentials: creds);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         #endregion
